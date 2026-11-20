@@ -1,0 +1,23 @@
+# Existing nginx on pk4u owns HTTPS and joins the external gateway network.
+services:
+  api:
+    environment:
+      OPENROUTER_PROXY: http://metacubexd:7890
+    networks:
+      default: {}
+      gateway:
+        aliases: [chest-api]
+  worker:
+    environment:
+      OPENROUTER_PROXY: http://metacubexd:7890
+    networks:
+      default: {}
+      gateway: {}
+  bot:
+    environment:
+      OPENROUTER_PROXY: http://127.0.0.1:7890
+  caddy:
+    profiles: [standalone-tls]
+networks:
+  gateway:
+    external: true

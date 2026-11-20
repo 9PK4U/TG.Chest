@@ -1,0 +1,16 @@
+.env
+openrouter-key.txt
+yandex-client*.txt
+yandex-*.txt
+*.secrets.json
+.venv
+.git
+data
+backups
+**/__pycache__
+**/.pytest_cache
+**/node_modules
+**/dist
+*.db
+*.log
+test-results

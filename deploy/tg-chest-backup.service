@@ -1,0 +1,22 @@
+[Unit]
+Description=TG.Chest verified backup to Yandex Disk
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/tg-chest
+ExecStart=/bin/bash /opt/tg-chest/scripts/backup.sh
+ExecStopPost=/bin/bash /opt/tg-chest/scripts/resume-backup.sh
+UMask=0077
+TimeoutStartSec=2h
+Restart=on-failure
+RestartSec=30min
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,97 @@
+name: tg-chest
+x-app: &app
+  build: .
+  image: tg-chest:local
+  env_file: .env
+  environment: &env
+    ENVIRONMENT: production
+    DEV_AUTH: "false"
+    DATABASE_URL: postgresql+psycopg://chest:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@db:5432/chest
+    DATA_DIR: /app/data
+  volumes:
+    - chest_data:/app/data
+  init: true
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  security_opt:
+    - no-new-privileges:true
+  cap_drop: [ALL]
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chest
+      POSTGRES_USER: chest
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # The bot uses host networking to reach a proxy bound to 127.0.0.1.
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U chest -d chest"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  migrate:
+    <<: *app
+    command: [alembic, upgrade, head]
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    <<: *app
+    restart: unless-stopped
+    mem_limit: 768m
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+  worker:
+    <<: *app
+    restart: unless-stopped
+    mem_limit: 1g
+    command: [python, -m, app.worker]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  bot:
+    <<: *app
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      <<: *env
+      DATABASE_URL: postgresql+psycopg://chest:${POSTGRES_PASSWORD}@127.0.0.1:5432/chest
+    command: [python, -m, app.bot]
+    mem_limit: 512m
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      DOMAIN: ${DOMAIN:-chest.pk4u.ru}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  postgres_data:
+  chest_data:
+  caddy_data:
+  caddy_config:

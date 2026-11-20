@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Chest backup at 05:00 Krasnoyarsk time
+
+[Timer]
+OnCalendar=*-*-* 05:00:00 Asia/Krasnoyarsk
+Persistent=true
+AccuracySec=1min
+Unit=tg-chest-backup.service
+
+[Install]
+WantedBy=timers.target
