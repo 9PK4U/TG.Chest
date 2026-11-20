@@ -41,18 +41,18 @@ The sample configuration stores attachments locally. To use Yandex Disk, authori
 
 | Task | Where to do it |
 | --- | --- |
-| Save something | Send or forward it to the bot. Use **Новая запись** in the Mini App to create a note manually. |
+| Save something | Send or forward it to the bot, or create a note directly in the Mini App. |
 | Organize an archive | Use folders, nested folders, tags, and favorites in the Mini App. Use `/folder Work/Projects` to create a nested path from Telegram. |
 | Find a note or file | Use `/find question` or the Mini App search. With AI configured, search can generate an answer with references to matching entries. |
-| Turn a message into notes | Use **Вкинуть информацию** to submit text and attachments for AI processing. Open **Исходники и история** to view the original and edits. |
-| Rewrite part of a note | Select a passage, choose **Предложить правку**, and review the change before applying it. |
-| Store a password | Open **Сейф** or use `/password`. The optional master password hint appears before unlock. Keep the master password out of the hint. |
+| Turn a message into notes | Submit text and attachments for AI processing. The entry’s history keeps the original input and edits. |
+| Rewrite part of a note | Select a passage, ask AI for an edit, and review the suggestion before applying it. |
+| Store a password | Open the vault in the Mini App or use `/password`. The optional master password hint appears on the unlock screen. Keep the master password out of the hint. |
 
 Text extraction supports common text files, DOCX, and PDFs with a text layer. Images and audio are searchable by their filename or caption.
 
 ## AI and privacy
 
-Configure chat, organization, embeddings, and reranking in the Mini App under **Profile → Настроить модели и подключения**. The two AI providers have separate API URLs, keys, and model settings. Both use OpenAI-compatible APIs.
+Open your profile in the Mini App to configure models for chat, note organization, embeddings, and reranking. The two AI providers have separate API URLs, keys, and model settings. Both use OpenAI-compatible APIs.
 
 | Mode | What happens |
 | --- | --- |
