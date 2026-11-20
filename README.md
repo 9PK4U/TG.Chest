@@ -4,7 +4,15 @@ A self-hosted Telegram bot and Mini App for saving notes, links, forwarded messa
 
 > This is a vibe-coded project built with OpenAI Codex and tested with a real Telegram bot and Mini App. It’s an experiment for personal use, with no guarantees that it works reliably or is easy to use.
 
-[Quick start](#quick-start) · [How to use](#how-to-use) · [AI and privacy](#ai-and-privacy) · [Backups](#backups) · [Development](#development)
+[Screenshots](#screenshots) · [Quick start](#quick-start) · [How to use](#how-to-use) · [AI and privacy](#ai-and-privacy) · [Backups](#backups) · [Development](#development)
+
+## Screenshots
+
+The Mini App on desktop and mobile, populated with sample notes and folders.
+
+![TG.Chest desktop view with folders and a grid of sample notes](docs/screenshots/desktop.png)
+
+<img src="docs/screenshots/mobile.png" width="300" alt="TG.Chest mobile view with search, folders, and sample notes">
 
 ## Quick start
 
